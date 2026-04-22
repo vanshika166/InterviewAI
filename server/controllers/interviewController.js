@@ -8,6 +8,14 @@ import Interview from '../models/interviewModel.js';
 // ANALYSE RESUME USING AI:
 export const analyseResume = async (req, res) => {
     try {
+        const userId = req.userId;
+        if(!userId){
+            return res.json("user does not have a token")
+        }
+        const user = await User.findById(userId)
+        if(!user){
+            return res.json("user does not exist.")
+        }
         if (!req.file) {
             return res.json("resume required.")
         }
@@ -102,7 +110,7 @@ export const generateQuestions = async (req, res) => {
         }
         const user = await User.findById(req.userId)
         if (!user) {
-            return res.json("User id not Authenticated.")
+            return res.json("User does not exist.")
         }
         if (user.credits < 50) {
             return res.json("User does not have enough credits.")
