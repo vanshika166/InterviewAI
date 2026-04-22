@@ -408,7 +408,7 @@ export const userInterviewList = async (req, res) => {
         if (!user) {
             return res.json({ success: false, message: "user does not exist" })
         }
-        const interviews = await Interview.findOne({ userId: req.userId }).sort({ createdAt: -1 }).select("role mode finalScore status createdAt experience questions")
+        const interviews = await Interview.find({ userId: req.userId }).sort({ createdAt: -1 }).select("role mode finalScore status createdAt experience questions")
         return res.json({ success: true, interviews })
     } catch (error) {
         console.log("user interview list error: ", error)
@@ -427,7 +427,7 @@ export const userInterviewStats = async (req, res) => {
         let totalTime;
         let bestScore;
 
-        let interviews = await Interview.findOne({ userId: req.userId }).select("finalScore totalTimeTaken")
+        let interviews = await Interview.find({ userId: req.userId }).select("finalScore totalTimeTaken")
 
         totalInterviews = interviews.length;
 
