@@ -68,7 +68,6 @@ const App = () => {
         dispatch(setUserCredits(null));
         dispatch(setUserData(null));
 
-        await signOut(auth);
       }
 
     } catch (error) {
