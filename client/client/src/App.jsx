@@ -66,13 +66,10 @@ const App = () => {
 
       } else {
         dispatch(setUserCredits(null));
-        dispatch(setUserData(null));
-
       }
 
     } catch (error) {
       console.log("getCurrentUser error:", error);
-
       dispatch(setUserCredits(null));
     }
   };
