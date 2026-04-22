@@ -22,82 +22,97 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "./utils/firebase.js";
 
 export const serverURL = "https://interviewai-server-jxpe.onrender.com"
+
 const App = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   useEffect(() => {
-  const unsubscribe = onAuthStateChanged(auth, (user) => {
-    if (user) {
-      console.log("Firebase user:", user);
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        dispatch(setUserData(null));
+        dispatch(setUserCredits(null));
+        dispatch(setLoading(false));
+        return;
+      }
 
-      // optionally backend ko sync karo
-      dispatch(setUserData(user));
-    } else {
-      dispatch(setUserData(null));
-    }
+      dispatch(setUserData({
+        uid: user.uid,
+        email: user.email,
+        displayName: user.displayName,
+        photoURL: user.photoURL,
+      }));
 
-    dispatch(setLoading(false));
-  });
+      await getCurrentUser();
 
-  return () => unsubscribe();
-}, [dispatch]);
+      dispatch(setLoading(false));
+    });
 
+    return () => unsubscribe();
+  }, [dispatch]);
 
-  useEffect(() => {
-    // get current users:
-     const getCurrentUser = async () => {
-      try {
-        const response = await axios.get(serverURL + '/api/user/current-user', { withCredentials: true });
+  //  BACKEND USER DATA
+  const getCurrentUser = async () => {
+    try {
+      const response = await axios.get(
+        serverURL + '/api/user/current-user',
+        { withCredentials: true }
+      );
 
-        if (response.data.success) {
-          dispatch(setUserCredits(response.data.user.credits));
-          console.log(response.data.user)
-        } else {
-          dispatch(setUserCredits(null));
-          dispatch(setUserData(null))
+      if (response.data.success) {
+        dispatch(setUserCredits(response.data.user.credits));
 
-          await signOut(auth)
-        }
+        await getInterviewStats();
+        await getUsersInterviewList();
 
-      } catch (error) {
-        console.log(`get currentuser error: ${error}`);
+      } else {
         dispatch(setUserCredits(null));
         dispatch(setUserData(null));
 
-        await signOut(auth)
-      } finally {
-        dispatch(setLoading(false));
+        await signOut(auth);
       }
-    };
-    //  get user's interviews stats:
-    const interviewStats = async () => {
-      try {
-        const result = await axios.post(serverURL + '/api/interview/user-interview-stats', {}, { withCredentials: true })
-        if (result.data.success) {
-          dispatch(setInterviewStats(result.data.stats))
-        }
-      } catch (error) {
-        console.log(`interview stats error: ${error}`)
-        dispatch(setInterviewStats(null))
-      }
-    }
-    // get interviewList for user:
-    const getUsersInterviewList = async () => {
-      try {
-        const result = await axios.post(serverURL + '/api/interview/user-interview-list', {}, { withCredentials: true })
-        if (result.data.success) {
-          dispatch(setInterviewList(result.data.interviews))
-        }
-      } catch (error) {
-        console.log(error)
-        dispatch(setInterviewList(null))
-      }
-    }
 
-    getUsersInterviewList()
-    interviewStats()
-    getCurrentUser();
-  }, [dispatch]);
+    } catch (error) {
+      console.log("getCurrentUser error:", error);
+
+      dispatch(setUserCredits(null));
+    }
+  };
+
+  // 📊 INTERVIEW STATS
+  const getInterviewStats = async () => {
+    try {
+      const result = await axios.post(
+        serverURL + '/api/interview/user-interview-stats',
+        {},
+        { withCredentials: true }
+      );
+
+      if (result.data.success) {
+        dispatch(setInterviewStats(result.data.stats));
+      }
+    } catch (error) {
+      console.log("stats error:", error);
+      dispatch(setInterviewStats(null));
+    }
+  };
+
+  // 📋 INTERVIEW LIST
+  const getUsersInterviewList = async () => {
+    try {
+      const result = await axios.post(
+        serverURL + '/api/interview/user-interview-list',
+        {},
+        { withCredentials: true }
+      );
+
+      if (result.data.success) {
+        dispatch(setInterviewList(result.data.interviews));
+      }
+    } catch (error) {
+      console.log("list error:", error);
+      dispatch(setInterviewList(null));
+    }
+  };
 
   return (
     <>
@@ -113,15 +128,15 @@ const App = () => {
           },
         }}
       />
+
       <Routes>
-        {/* HOME */}
         <Route path='/' element={<Mainlayout />}>
           <Route index element={<Home />} />
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/history' element={<History />} />
           <Route path='/details/:id' element={<InterviewDetail />} />
         </Route>
-        {/* INTERVIEW */}
+
         <Route path="/interview/:type" element={
           <ProtectedRoute>
             <InterviewLayout />
@@ -130,17 +145,16 @@ const App = () => {
           <Route index element={<SelectInterview />} />
           <Route path='start-practice' element={<StartInterview />} />
         </Route>
-        {/* PRICING */}
+
         <Route path='/pricing' element={<PricingLayout />}>
           <Route index element={<Plan />} />
           <Route path='pay' element={<Payment />} />
         </Route>
+
         <Route path='/auth' element={<Authentication />} />
       </Routes>
     </>
-
-
   )
 }
 
-export default App
+export default App;
