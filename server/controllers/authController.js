@@ -11,8 +11,8 @@ export const googleAuth = async (req, res) => {
         let token = await generateToken(user._id)
         res.cookie("token", token, {
             httpOnly: true,
-            secure: true,
-            sameSite: "None",
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: "Lax",
             maxAge: 7 * 24 * 60 * 60 * 1000
         })
         return res.json(user)
@@ -25,7 +25,11 @@ export const googleAuth = async (req, res) => {
 
 export const logout = async (req, res) => {
     try {
-        await res.clearCookie("token")
+        res.clearCookie("token", {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: "Lax"
+        })
         return res.json({ success: true, message: "Logout successfully." })
 
     } catch (err) {
