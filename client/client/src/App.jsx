@@ -21,7 +21,7 @@ import Payment from './features/pricing/pages/Payment.jsx';
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "./utils/firebase.js";
 
-export const serverURL = "http://localhost:5000"
+export const serverURL = "https://interviewai-server-jxpe.onrender.com"
 const App = () => {
   const dispatch = useDispatch()
 
