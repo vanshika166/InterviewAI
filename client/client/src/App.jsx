@@ -28,8 +28,6 @@ const App = () => {
 
   useEffect(() => {
       await getCurrentUser();
-      getInterviewStats();
-      getUsersInterviewList()
   }, [dispatch]);
 
   //  BACKEND USER DATA
