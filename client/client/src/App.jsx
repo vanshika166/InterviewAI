@@ -27,7 +27,7 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-      await getCurrentUser();
+     getCurrentUser();
   }, [dispatch]);
 
   //  BACKEND USER DATA
