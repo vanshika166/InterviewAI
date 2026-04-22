@@ -10,9 +10,9 @@ export const googleAuth = async (req, res) => {
         }
         let token = await generateToken(user._id)
         res.cookie("token", token, {
-            http: true,
-            secure: false,
-            sameSite: "strict",
+            httpOnly: true,
+            secure: true,
+            sameSite: "None",
             maxAge: 7 * 24 * 60 * 60 * 1000
         })
         return res.json(user)
@@ -26,7 +26,7 @@ export const googleAuth = async (req, res) => {
 export const logout = async (req, res) => {
     try {
         await res.clearCookie("token")
-        return res.json({success:true,message:"Logout successfully."})
+        return res.json({ success: true, message: "Logout successfully." })
 
     } catch (err) {
         console.log(`logout error: ${err}`)
