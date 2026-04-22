@@ -27,27 +27,9 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        dispatch(setUserData(null));
-        dispatch(setUserCredits(null));
-        dispatch(setLoading(false));
-        return;
-      }
-
-      dispatch(setUserData({
-        uid: user.uid,
-        email: user.email,
-        displayName: user.displayName,
-        photoURL: user.photoURL,
-      }));
-
       await getCurrentUser();
-
-      dispatch(setLoading(false));
-    });
-
-    return () => unsubscribe();
+      getInterviewStats();
+      getUsersInterviewList()
   }, [dispatch]);
 
   //  BACKEND USER DATA
