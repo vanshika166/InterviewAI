@@ -9,13 +9,13 @@ export const googleAuth = async (req, res) => {
             user = await User.create({ name, email })
         }
         let token = await generateToken(user._id)
-        const isDevelopment = process.env.NODE_ENV === 'development'
         res.cookie("token", token, {
             httpOnly: true,
-            secure: !isDevelopment,
-            sameSite: isDevelopment ? "Lax" : "None",
+            secure: true,
+            sameSite: "None",
+            path: "/",
             maxAge: 7 * 24 * 60 * 60 * 1000
-        })
+        });
         return res.json(user)
 
     } catch (error) {
@@ -26,12 +26,12 @@ export const googleAuth = async (req, res) => {
 
 export const logout = async (req, res) => {
     try {
-        const isDevelopment = process.env.NODE_ENV === 'development'
         res.clearCookie("token", {
             httpOnly: true,
-            secure: !isDevelopment,
-            sameSite: isDevelopment ? "Lax" : "None"
-        })
+            secure: true,
+            sameSite: "None",
+            path: "/"
+        });
         return res.json({ success: true, message: "Logout successfully." })
 
     } catch (err) {
