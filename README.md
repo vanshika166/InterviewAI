@@ -51,6 +51,14 @@ The platform focuses on building confidence, enhancing communication skills, and
 👉 [Try Interview AI](https://interviewai-client-k2gz.onrender.com)
 
 ---
+## 📸 Screenshots
+
+### 🏠 Home Page
+![Home](./screenshots/home.png)
+![Dashboard](./screenshots/dashboard.png)
+![Interview](./screenshots/interviewlay.png)
+![Report](./screenshots/report.png)
+
 
 ##  Developed By **Vanshika**
 
