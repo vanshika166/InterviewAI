@@ -43,11 +43,7 @@ const App = () => {
 
         await getInterviewStats();
         await getUsersInterviewList();
-
-      } else {
-        dispatch(setUserCredits(null));
-      }
-
+      } 
     } catch (error) {
       console.log("getCurrentUser error:", error);
       dispatch(setUserCredits(null));
