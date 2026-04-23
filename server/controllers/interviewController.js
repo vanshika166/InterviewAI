@@ -449,28 +449,31 @@ export const userInterviewStats = async (req, res) => {
 // GET USER'S PROGRESS IN ALL INTERVIEWS:
 export const Userprogress = async (req, res) => {
     try {
-        const user = await User.findById(req.userId)
+        const user = await User.findById(req.userId);
         if (!user) {
-            return res.json({ success: false, message: "user does not exist" })
-        }
-        const interviews = await Interview.findOne({ userId: req.userId });
-        if (!interviews) {
-            return res.json("user has not perform any interview yet.")
+            return res.json({ success: false, message: "user does not exist" });
         }
 
-        let confidence = 0
-        let correctness = 0
-        let communication = 0
+        const interviews = await Interview.find({ userId: req.userId });
+
+        if (!interviews.length) {
+            return res.json("user has not perform any interview yet.");
+        }
+
+        let confidence = 0;
+        let correctness = 0;
+        let communication = 0;
+        let totalQuestions = 0;
 
         interviews.forEach((i) => {
-            i.questions.map((q) => {
-                confidence += q.confidence
-                correctness += q.correctness
-                communication += q.communication
-            })
-        })
+            i.questions.forEach((q) => {
+                confidence += q.confidence || 0;
+                correctness += q.correctness || 0;
+                communication += q.communication || 0;
+                totalQuestions++;
+            });
+        });
 
-        const totalQuestions = interviews.reduce((a, b) => a + (b.questions.length || 0), 0)
         const maxPerQuestion = 10;
         const totalMax = totalQuestions * maxPerQuestion;
 
@@ -478,10 +481,10 @@ export const Userprogress = async (req, res) => {
         correctness = totalMax ? Math.floor((correctness / totalMax) * 100) : 0;
         communication = totalMax ? Math.floor((communication / totalMax) * 100) : 0;
 
-        return res.json({ confidence, correctness, communication })
+        return res.json({ confidence, correctness, communication });
 
     } catch (error) {
-        console.log(`userprogress error: ${error}`)
-        return res.json({ error: error.message })
+        console.log(`userprogress error: ${error}`);
+        return res.json({ error: error.message });
     }
-}
+};
