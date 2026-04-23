@@ -4,7 +4,7 @@ import Logo from "../UI/Logo";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { serverURL } from "../../App.jsx";
-import { setUserCredits, setUserData } from "../../redux/userSlice.js";
+import { setUserData } from "../../redux/userSlice.js";
 import { setInterviewList, setInterviewStats } from "../../redux/interviewSlice.js";
 
 const Navbar = () => {
@@ -54,7 +54,7 @@ const UserNav = ({ user }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const initial = user?.displayName?.charAt(0).toUpperCase();
+  const initial = user?.name?.charAt(0).toUpperCase();
 
   useEffect(() => {
     const handleClickOutside = (event) => {

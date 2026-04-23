@@ -5,10 +5,9 @@ import { toast } from 'sonner';
 const HomeSection = () => {
   const navigate = useNavigate()
 const user = useSelector((state)=>state.user.userData)
-  const credits = useSelector((state)=>state.user.userCredits)
   const handleNavigation = () => {
     if (user) {
-      if (credits && credits < 50) {
+      if (user.credits && user.credits < 50) {
         toast.info("Your credits are over. Upgrade to continue.")
       } else {
         navigate("/interview/Technical")

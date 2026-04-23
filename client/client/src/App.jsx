@@ -11,7 +11,7 @@ import StartInterview from './features/interview/pages/StartInterview.jsx'
 import { useEffect } from 'react'
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
-import { setUserData, setLoading, setUserCredits } from './redux/userSlice.js'
+import { setUserData, setLoading } from './redux/userSlice.js'
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import InterviewDetail from './features/InterviewDetail/page/InterviewDetail.jsx';
 import { setInterviewList, setInterviewStats } from './redux/interviewSlice.js';

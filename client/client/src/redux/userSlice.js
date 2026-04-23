@@ -5,7 +5,6 @@ export const userSlice = createSlice({
     initialState:{
         userData:null,
         loading:true,
-        userCredits:null
     },
     reducers:{
         setUserData:((state,action)=>{
@@ -13,13 +12,10 @@ export const userSlice = createSlice({
         }),
          setLoading: (state, action) => {
       state.loading = action.payload;
-    },
-    setUserCredits:((state,action)=>{
-        state.userCredits = action.payload;
-    })
+    }
     }
 })
 
-export const {setUserData,setLoading,setUserCredits} = userSlice.actions;
+export const {setUserData,setLoading} = userSlice.actions;
 
 export default userSlice.reducer;

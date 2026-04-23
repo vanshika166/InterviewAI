@@ -11,7 +11,7 @@ import { toast } from "sonner";
 const DashboardContent = () => {
   const navigate = useNavigate()
   const interviewList = useSelector((state) => state.interview?.interviewList)
-  const credits = useSelector((state)=>state.user.userCredits);
+  const user = useSelector((state)=>state.user.userData);
   const history = interviewList?.slice(0, 3)
   const [score, setScore] = useState(null)
   const sessions = [
@@ -34,7 +34,7 @@ const DashboardContent = () => {
   }, [])
 
   const handleNavigate = (id)=>{
-    if(credits<0 || credits === 0){
+    if(user?.credits<0 || user?.credits === 0){
       toast.info("Your credits are over. Upgrade to continue.")
     }else{
       navigate(`/interview/${id}`)

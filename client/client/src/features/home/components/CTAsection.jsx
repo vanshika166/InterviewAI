@@ -5,12 +5,12 @@ import { toast } from "sonner";
 
 const CTAsection = () => {
   const user = useSelector((state) => state.user.userData)
-    const credits = useSelector((state)=>state.user.userCredits)
+
   const navigate = useNavigate()
 
   const handleNavigation = () => {
     if (user) {
-      if(credits && credits<50){
+      if(user.credits && user.credits<50){
         toast.info("Your credits are over. Upgrade to continue.")
       }else{
         navigate("/interview/Technical")
