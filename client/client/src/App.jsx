@@ -39,14 +39,14 @@ const App = () => {
       );
 
       if (response.data.success) {
-        dispatch(setUserCredits(response.data.user.credits));
+        dispatch(setUserData(response.data.user));
 
         await getInterviewStats();
         await getUsersInterviewList();
       } 
     } catch (error) {
       console.log("getCurrentUser error:", error);
-      dispatch(setUserCredits(null));
+      dispatch(setUserData(null));
     }
   };
 

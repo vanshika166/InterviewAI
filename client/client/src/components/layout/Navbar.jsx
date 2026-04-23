@@ -51,8 +51,6 @@ export default Navbar;
 const UserNav = ({ user }) => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef();
-  const credits = useSelector((state)=>state.user.userCredits)
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -88,7 +86,6 @@ const UserNav = ({ user }) => {
       );
       if (response.data.success) {
         dispatch(setUserData(null));
-        dispatch(setUserCredits(null));
         dispatch(setInterviewStats(null))
         dispatch(setInterviewList(null))
         navigate("/");
@@ -116,7 +113,7 @@ const UserNav = ({ user }) => {
           <div className="bg-[#2EBDDB]/10 rounded-xl px-4 py-3 mb-3 flex items-center justify-between">
             <span className="text-sm text-gray-700">Credits</span>
             <span className="text-sm font-bold text-[#2EBDDB]">
-              {credits}
+              {user?.credits|| 0}
             </span>
           </div>
 
