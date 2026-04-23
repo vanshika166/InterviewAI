@@ -9,10 +9,11 @@ export const googleAuth = async (req, res) => {
             user = await User.create({ name, email })
         }
         let token = await generateToken(user._id)
+        const isDevelopment = process.env.NODE_ENV === 'development'
         res.cookie("token", token, {
             httpOnly: true,
-            secure: true,
-            sameSite: "None",
+            secure: !isDevelopment,
+            sameSite: isDevelopment ? "Lax" : "None",
             maxAge: 7 * 24 * 60 * 60 * 1000
         })
         return res.json(user)
@@ -25,10 +26,11 @@ export const googleAuth = async (req, res) => {
 
 export const logout = async (req, res) => {
     try {
+        const isDevelopment = process.env.NODE_ENV === 'development'
         res.clearCookie("token", {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: "Lax"
+            secure: !isDevelopment,
+            sameSite: isDevelopment ? "Lax" : "None"
         })
         return res.json({ success: true, message: "Logout successfully." })
 
