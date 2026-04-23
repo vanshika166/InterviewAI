@@ -28,7 +28,7 @@ const App = () => {
 
   useEffect(() => {
      getCurrentUser();
-  }, []);
+  }, [dispatch]);
 
   //  BACKEND USER DATA
   const getCurrentUser = async () => {
