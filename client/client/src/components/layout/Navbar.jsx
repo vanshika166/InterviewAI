@@ -4,7 +4,8 @@ import Logo from "../UI/Logo";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { serverURL } from "../../App.jsx";
-import { setUserData } from "../../redux/userSlice.js";
+import { setUserCredits, setUserData } from "../../redux/userSlice.js";
+import { setInterviewList, setInterviewStats } from "../../redux/interviewSlice.js";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -87,6 +88,9 @@ const UserNav = ({ user }) => {
       );
       if (response.data.success) {
         dispatch(setUserData(null));
+        dispatch(setUserCredits(null));
+        dispatch(setInterviewStats(null))
+        dispatch(setInterviewList(null))
         navigate("/");
       }
     } catch (error) {
