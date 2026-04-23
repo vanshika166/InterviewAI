@@ -7,7 +7,7 @@ const HomeSection = () => {
 const user = useSelector((state)=>state.user.userData)
   const handleNavigation = () => {
     if (user) {
-      if (user.credits && user.credits < 50) {
+      if (user?.credits && user?.credits < 50) {
         toast.info("Your credits are over. Upgrade to continue.")
       } else {
         navigate("/interview/Technical")

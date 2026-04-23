@@ -47,6 +47,8 @@ const App = () => {
     } catch (error) {
       console.log("getCurrentUser error:", error);
       dispatch(setUserData(null));
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 
