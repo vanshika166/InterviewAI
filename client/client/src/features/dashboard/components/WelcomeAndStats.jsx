@@ -42,7 +42,7 @@ useEffect(() => {
       {/* Welcome Section */}
       <div>
         <h1 className="text-3xl font-semibold text-gray-900">
-          Welcome back, John!
+          Welcome back!
         </h1>
         <p className="text-gray-600 mt-1">
           Ready to practice your interview skills?
